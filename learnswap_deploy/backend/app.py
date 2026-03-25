@@ -18,7 +18,15 @@ from credit_system import CreditSystem
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = Flask(__name__, static_folder='../frontend', static_url_path='')
+# Calculate correct absolute path to frontend
+backend_dir = os.path.dirname(os.path.abspath(__file__))
+frontend_dir = os.path.abspath(os.path.join(backend_dir, '..', 'frontend'))
+
+# Only set static folder if frontend exists, otherwise serve API only
+if os.path.exists(frontend_dir):
+    app = Flask(__name__, static_folder=frontend_dir, static_url_path='')
+else:
+    app = Flask(__name__)
 app.config.from_object(Config)
 
 os.makedirs(os.path.join(os.path.dirname(__file__), 'instance'), exist_ok=True)
@@ -206,14 +214,25 @@ def flag_dispute(session_id, reporter_id, dispute_type, description):
 
 @app.route('/')
 def serve_index():
-    return send_from_directory('../frontend', 'index.html')
+    try:
+        return send_from_directory(frontend_dir, 'index.html')
+    except Exception as e:
+        logger.error(f"Error serving index: {e}")
+        return jsonify({'error': 'Frontend not available'}), 404
 
 @app.route('/<path:path>')
 def serve_frontend(path):
-    full = os.path.join('../frontend', path)
-    if os.path.exists(full):
-        return send_from_directory('../frontend', path)
-    return send_from_directory('../frontend', 'index.html')
+    try:
+        full = os.path.join(frontend_dir, path)
+        if os.path.exists(full) and os.path.isfile(full):
+            return send_from_directory(frontend_dir, path)
+        # For SPA routing, serve index.html for non-API routes
+        if path and not path.startswith('api/'):
+            return send_from_directory(frontend_dir, 'index.html')
+        return jsonify({'error': 'Not found'}), 404
+    except Exception as e:
+        logger.error(f"Error serving {path}: {e}")
+        return jsonify({'error': 'Frontend not available'}), 404
 
 # ─────────────────────────── HEALTH ─────────────────────────────────────────
 
