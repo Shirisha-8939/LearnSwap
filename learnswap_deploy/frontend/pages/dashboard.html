@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - LearnSwap</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Dashboard overrides for great UI */
+        .main-content { padding: 2rem 2.5rem; }
+
+        /* Welcome banner */
+        .welcome-banner {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            border-radius: 20px; padding: 2rem 2.5rem; margin-bottom: 2rem;
+            display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+        }
+        .wb-left h1 { font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 0.3rem; }
+        .wb-left p  { font-size: 0.9rem; color: rgba(255,255,255,0.65); }
+        .wb-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+        .btn-wb { padding: 10px 20px; border-radius: 10px; font-weight: 600; font-size: 0.88rem; border: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 7px; transition: all 0.2s; }
+        .btn-wb-primary { background: linear-gradient(135deg,#6366f1,#8b5cf6); color: #fff; box-shadow: 0 4px 16px rgba(99,102,241,0.4); }
+        .btn-wb-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(99,102,241,0.55); }
+        .btn-wb-ghost { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+        .btn-wb-ghost:hover { background: rgba(255,255,255,0.18); }
+
+        /* Stat cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-bottom: 2rem; }
+        @media(max-width:1000px){ .stats-grid{grid-template-columns:repeat(2,1fr);} }
+        @media(max-width:600px){ .stats-grid{grid-template-columns:1fr;} }
+
+        .stat-card {
+            background: #fff; border-radius: 16px; padding: 1.4rem 1.6rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07); border: 1px solid #f3f4f6;
+            display: flex; align-items: center; gap: 1rem; transition: all 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.1); }
+        .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+        .stat-icon.purple { background: #ede9fe; color: #6366f1; }
+        .stat-icon.blue   { background: #dbeafe; color: #3b82f6; }
+        .stat-icon.green  { background: #dcfce7; color: #16a34a; }
+        .stat-icon.amber  { background: #fef3c7; color: #d97706; }
+        .stat-info h3 { font-size: 0.78rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+        .stat-info p  { font-size: 1.8rem; font-weight: 800; color: #111; line-height: 1; }
+
+        /* Section headers */
+        .sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; }
+        .sec-head h2 { font-size: 1.05rem; font-weight: 700; color: #111; }
+        .sec-head a  { font-size: 0.82rem; color: #6366f1; font-weight: 500; text-decoration: none; }
+
+        /* Session cards */
+        .sess-card {
+            background: #fff; border-radius: 14px; padding: 1.2rem 1.5rem;
+            border: 1px solid #f3f4f6; box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+            margin-bottom: 0.8rem; display: flex; align-items: flex-start; gap: 1rem;
+            transition: all 0.2s;
+        }
+        .sess-card:hover { border-color: #e0e7ff; box-shadow: 0 4px 16px rgba(99,102,241,0.1); }
+        .sess-avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg,#6366f1,#8b5cf6); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
+        .sess-body { flex: 1; min-width: 0; }
+        .sess-title { font-weight: 700; font-size: 0.92rem; color: #111; margin-bottom: 2px; }
+        .sess-meta  { font-size: 0.78rem; color: #9ca3af; display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
+        .sess-meta i { color: #6366f1; margin-right: 3px; }
+        .sess-progress-wrap { margin-top: 6px; }
+        .sess-progress-label { display: flex; justify-content: space-between; font-size: 0.73rem; color: #6b7280; margin-bottom: 3px; }
+        .sess-progress-bar { height: 6px; background: #f3f4f6; border-radius: 999px; overflow: hidden; }
+        .sess-progress-fill { height: 100%; background: linear-gradient(90deg,#6366f1,#8b5cf6); border-radius: 999px; transition: width 0.4s ease; }
+        .sess-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+        .status-badge { font-size: 0.72rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+        .status-pending   { background: #fef3c7; color: #d97706; }
+        .status-accepted  { background: #dbeafe; color: #2563eb; }
+        .status-ongoing   { background: #dcfce7; color: #16a34a; }
+        .status-completed { background: #f3f4f6; color: #6b7280; }
+        .status-cancelled { background: #fee2e2; color: #dc2626; }
+
+        /* Quick links */
+        .quick-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+        @media(max-width:700px){ .quick-grid{grid-template-columns:1fr 1fr;} }
+        .quick-card { background: #fff; border-radius: 14px; padding: 1.4rem; border: 1px solid #f3f4f6; text-align: center; text-decoration: none; transition: all 0.2s; }
+        .quick-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99,102,241,0.12); border-color: #e0e7ff; }
+        .quick-card .qc-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem; font-size: 1.1rem; }
+        .quick-card h4 { font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 2px; }
+        .quick-card p  { font-size: 0.76rem; color: #9ca3af; }
+
+        /* Empty state */
+        .empty-state { text-align: center; padding: 3rem 1rem; color: #9ca3af; }
+        .empty-state i { font-size: 2.5rem; margin-bottom: 1rem; display: block; color: #d1d5db; }
+        .empty-state p { font-size: 0.88rem; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-exchange-alt"></i> <span>LearnSwap</span></h2>
+        </div>
+        <div class="user-info">
+            <div class="user-avatar" id="sidebarAvatar"><i class="fas fa-user"></i></div>
+            <div class="user-name" id="userName">Loading...</div>
+            <div class="user-credits" id="userCredits">Credits: 0</div>
+        </div>
+        <div class="sidebar-menu">
+            <a href="dashboard.html" class="active"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <a href="browse-skills.html"><i class="fas fa-search"></i><span>Browse Skills</span></a>
+            <a href="my-sessions.html"><i class="fas fa-calendar"></i><span>My Sessions</span></a>
+            <a href="add-skill.html"><i class="fas fa-plus-circle"></i><span>Add Skill</span></a>
+            <a href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a>
+<a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main-content">
+
+        <!-- Welcome banner -->
+        <div class="welcome-banner">
+            <div class="wb-left">
+                <h1>Welcome back, <span id="welcomeName">User</span>!</h1>
+                <p>Here's a summary of your learning and teaching activity.</p>
+            </div>
+            <div class="wb-actions">
+                <a href="browse-skills.html" class="btn-wb btn-wb-primary">
+                    <i class="fas fa-search"></i> Browse Skills
+                </a>
+                <a href="add-skill.html" class="btn-wb btn-wb-ghost">
+                    <i class="fas fa-plus"></i> Teach a Skill
+                </a>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon purple"><i class="fas fa-coins"></i></div>
+                <div class="stat-info"><h3>Credits</h3><p id="creditsCount">0</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon blue"><i class="fas fa-chalkboard-teacher"></i></div>
+                <div class="stat-info"><h3>Teaching</h3><p id="teachingCount">0</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green"><i class="fas fa-graduation-cap"></i></div>
+                <div class="stat-info"><h3>Learning</h3><p id="learningCount">0</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon amber"><i class="fas fa-star"></i></div>
+                <div class="stat-info"><h3>Rating</h3><p id="ratingCount">—</p></div>
+            </div>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="sec-head"><h2>Quick Actions</h2></div>
+        <div class="quick-grid">
+            <a href="browse-skills.html" class="quick-card">
+                <div class="qc-icon" style="background:#ede9fe;color:#6366f1;"><i class="fas fa-search"></i></div>
+                <h4>Find a Skill</h4><p>Browse and request sessions</p>
+            </a>
+            <a href="add-skill.html" class="quick-card">
+                <div class="qc-icon" style="background:#dcfce7;color:#16a34a;"><i class="fas fa-plus-circle"></i></div>
+                <h4>Teach a Skill</h4><p>List what you can teach</p>
+            </a>
+            <a href="my-sessions.html" class="quick-card">
+                <div class="qc-icon" style="background:#dbeafe;color:#3b82f6;"><i class="fas fa-calendar-check"></i></div>
+                <h4>My Sessions</h4><p>View &amp; manage sessions</p>
+            </a>
+        </div>
+
+        <!-- Recent sessions with progress -->
+        <div class="sec-head">
+            <h2>Recent Sessions</h2>
+            <a href="my-sessions.html">View all</a>
+        </div>
+        <div id="recentSessions">
+            <div class="empty-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading sessions...</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="notification" class="notification"></div>
+<script src="../js/main.js"></script>
+<script src="../js/notifications.js"></script>
+<script src="../js/dashboard.js"></script>
+</body>
+</html>

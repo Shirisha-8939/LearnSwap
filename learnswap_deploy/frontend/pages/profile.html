@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - LearnSwap</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .profile-wrapper { display:grid; grid-template-columns:300px 1fr; gap:1.5rem; }
+        @media(max-width:900px){ .profile-wrapper{ grid-template-columns:1fr; } }
+
+        /* Avatar */
+        .avatar-wrap { position:relative; width:110px; margin:0 auto 1rem; }
+        .avatar-orb {
+            width:110px; height:110px; border-radius:50%;
+            background:linear-gradient(135deg,#6366f1,#8b5cf6);
+            display:flex; align-items:center; justify-content:center;
+            font-size:2.4rem; font-weight:800; color:#fff;
+            box-shadow:0 6px 24px rgba(99,102,241,0.35);
+            letter-spacing:-1px; overflow:hidden; cursor:pointer;
+        }
+        .avatar-orb img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+        .avatar-edit-btn {
+            position:absolute; bottom:0; right:0;
+            width:30px; height:30px; border-radius:50%;
+            background:#6366f1; border:2px solid #fff;
+            display:flex; align-items:center; justify-content:center;
+            cursor:pointer; color:#fff; font-size:0.75rem;
+            box-shadow:0 2px 6px rgba(0,0,0,0.2);
+        }
+        .avatar-edit-btn:hover { background:#4f46e5; }
+
+        /* Card */
+        .p-card { background:#fff; border-radius:16px; padding:2rem; box-shadow:0 2px 16px rgba(0,0,0,0.08); text-align:center; }
+        .p-name  { font-size:1.35rem; font-weight:700; color:#111; margin-bottom:3px; }
+        .p-email { color:#6b7280; font-size:0.85rem; margin-bottom:0.7rem; }
+        .p-role  { display:inline-block; padding:3px 14px; border-radius:999px; font-size:0.76rem; font-weight:600; background:#ede9fe; color:#6366f1; margin-bottom:1rem; }
+
+        /* Star rating */
+        .star-row { display:flex; justify-content:center; align-items:center; gap:3px; margin-bottom:3px; }
+        .star-full  { color:#f59e0b; font-size:1.1rem; }
+        .star-empty { color:#d1d5db; font-size:1.1rem; }
+        .rating-label { font-size:0.8rem; color:#6b7280; margin-bottom:1rem; }
+
+        /* Bio */
+        .p-bio { background:#f9fafb; border-radius:10px; padding:0.7rem 1rem; font-size:0.85rem; color:#6b7280; text-align:left; line-height:1.6; margin-bottom:1rem; min-height:44px; }
+        .p-bio.empty { font-style:italic; color:#9ca3af; }
+
+        /* Stats */
+        .p-stats { display:flex; border-top:1px solid #f3f4f6; border-bottom:1px solid #f3f4f6; margin:1rem 0; }
+        .p-stat  { flex:1; padding:0.85rem 0; text-align:center; }
+        .p-stat:not(:last-child){ border-right:1px solid #f3f4f6; }
+        .p-stat-val { font-size:1.35rem; font-weight:700; color:#6366f1; }
+        .p-stat-lbl { font-size:0.7rem; color:#9ca3af; text-transform:uppercase; letter-spacing:0.4px; margin-top:2px; }
+
+        /* Meta */
+        .p-meta { text-align:left; margin-top:0.5rem; }
+        .p-meta-row { display:flex; align-items:center; gap:8px; color:#6b7280; font-size:0.83rem; margin-bottom:8px; }
+        .p-meta-row i { width:16px; color:#6366f1; }
+
+        /* Right column */
+        .p-right { display:flex; flex-direction:column; gap:1.5rem; }
+        .p-section { background:#fff; border-radius:16px; padding:1.75rem; box-shadow:0 2px 16px rgba(0,0,0,0.08); }
+        .p-section-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.2rem; }
+        .p-section-head h2 { font-size:1rem; font-weight:700; color:#111; margin:0; display:flex; align-items:center; gap:7px; }
+
+        /* Skills */
+        .p-skills-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:1rem; }
+        .p-skill-card { background:#f9fafb; border:1px solid #e5e7eb; border-radius:12px; padding:1rem; }
+        .p-skill-name { font-weight:600; font-size:0.88rem; color:#111; margin-bottom:6px; }
+        .p-skill-row  { display:flex; justify-content:space-between; align-items:center; }
+        .level-Beginner     { font-size:0.7rem; padding:2px 9px; border-radius:999px; font-weight:600; background:#dcfce7; color:#16a34a; }
+        .level-Intermediate { font-size:0.7rem; padding:2px 9px; border-radius:999px; font-weight:600; background:#fef3c7; color:#d97706; }
+        .level-Advanced     { font-size:0.7rem; padding:2px 9px; border-radius:999px; font-weight:600; background:#fee2e2; color:#dc2626; }
+        .p-skill-credits { font-size:0.75rem; color:#6366f1; font-weight:600; }
+        .p-skill-desc { font-size:0.76rem; color:#9ca3af; margin-top:5px; line-height:1.4; }
+
+        /* Reviews */
+        .review-card { padding:1rem 0; border-bottom:1px solid #f3f4f6; }
+        .review-card:last-child { border-bottom:none; padding-bottom:0; }
+        .review-top  { display:flex; justify-content:space-between; margin-bottom:5px; }
+        .review-author { font-weight:600; font-size:0.85rem; color:#111; }
+        .review-stars  { color:#f59e0b; font-size:0.85rem; letter-spacing:1px; }
+        .review-comment{ font-size:0.83rem; color:#6b7280; line-height:1.5; }
+        .review-date   { font-size:0.73rem; color:#9ca3af; margin-top:3px; }
+
+        /* Edit Modal */
+        .edit-overlay {
+            display:none; position:fixed; inset:0; z-index:9000;
+            background:rgba(0,0,0,0.45); backdrop-filter:blur(4px);
+            align-items:center; justify-content:center;
+        }
+        .edit-overlay.open { display:flex; }
+        .edit-box {
+            background:#fff; border-radius:16px; padding:2rem;
+            width:100%; max-width:440px; box-shadow:0 16px 48px rgba(0,0,0,0.2);
+            max-height:90vh; overflow-y:auto;
+        }
+        .edit-box h3 { font-size:1.1rem; font-weight:700; margin-bottom:1.2rem; color:#111; }
+        .ef label { font-size:0.85rem; font-weight:600; color:#374151; margin-bottom:4px; display:block; }
+        .ef input, .ef textarea, .ef select {
+            width:100%; padding:10px 14px; border:1.5px solid #e5e7eb;
+            border-radius:8px; font-size:0.9rem; color:#111;
+            background:#fff; box-sizing:border-box; font-family:inherit;
+        }
+        .ef input:focus, .ef textarea:focus { outline:none; border-color:#6366f1; }
+        .ef textarea { resize:vertical; min-height:90px; }
+        .char-count { font-size:0.73rem; color:#9ca3af; text-align:right; margin-top:2px; }
+        .ef-row { display:flex; gap:10px; margin-top:0.5rem; }
+
+        /* Photo upload area */
+        .photo-drop {
+            border:2px dashed #e5e7eb; border-radius:12px; padding:1.5rem;
+            text-align:center; cursor:pointer; transition:border-color 0.2s;
+            background:#fafafa;
+        }
+        .photo-drop:hover { border-color:#6366f1; }
+        .photo-drop i { font-size:2rem; color:#d1d5db; margin-bottom:0.5rem; display:block; }
+        .photo-drop p { font-size:0.82rem; color:#9ca3af; margin:0; }
+        .photo-preview { width:80px; height:80px; border-radius:50%; object-fit:cover; margin:0 auto 0.5rem; display:block; border:3px solid #6366f1; }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-exchange-alt"></i> <span>LearnSwap</span></h2>
+        </div>
+        <div class="user-info">
+            <div class="user-avatar" id="sidebarAvatar"><i class="fas fa-user"></i></div>
+            <div class="user-name" id="userName">Loading...</div>
+            <div class="user-credits" id="userCredits">Credits: 0</div>
+        </div>
+        <div class="sidebar-menu">
+            <a href="dashboard.html"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <a href="browse-skills.html"><i class="fas fa-search"></i><span>Browse Skills</span></a>
+            <a href="my-sessions.html"><i class="fas fa-calendar"></i><span>My Sessions</span></a>
+            <a href="add-skill.html"><i class="fas fa-plus-circle"></i><span>Add Skill</span></a>
+            <a href="profile.html" class="active"><i class="fas fa-user"></i><span>Profile</span></a>
+<a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h1 style="margin-bottom:1.5rem;">My Profile</h1>
+
+        <div class="profile-wrapper">
+            <!-- Left card -->
+            <div class="p-card">
+                <!-- Avatar with edit button -->
+                <div class="avatar-wrap">
+                    <div class="avatar-orb" id="avatarOrb" onclick="openPhotoModal()"></div>
+                    <div class="avatar-edit-btn" onclick="openPhotoModal()" title="Change photo">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                </div>
+                <input type="file" id="photoFileInput" accept="image/*" style="display:none;" onchange="handlePhotoFile(event)">
+
+                <div class="p-name"  id="profileUsername">Loading...</div>
+                <div class="p-email" id="profileEmail"></div>
+                <span class="p-role" id="profileRole">—</span>
+
+                <div class="star-row" id="starRow"></div>
+                <div class="rating-label" id="ratingLabel">No ratings yet</div>
+
+                <div class="p-bio empty" id="profileBio">No bio yet. Click Edit Profile to add one.</div>
+
+                <div class="p-stats">
+                    <div class="p-stat">
+                        <div class="p-stat-val" id="profileCredits">0</div>
+                        <div class="p-stat-lbl">Credits</div>
+                    </div>
+                    <div class="p-stat">
+                        <div class="p-stat-val" id="profileSessions">0</div>
+                        <div class="p-stat-lbl">Sessions</div>
+                    </div>
+                    <div class="p-stat">
+                        <div class="p-stat-val" id="profileSkillCount">0</div>
+                        <div class="p-stat-lbl">Skills</div>
+                    </div>
+                </div>
+
+                <div class="p-meta">
+                    <div class="p-meta-row"><i class="fas fa-calendar-alt"></i><span>Joined <span id="profileJoined">—</span></span></div>
+                    <div class="p-meta-row"><i class="fas fa-envelope"></i><span id="profileEmailMeta">—</span></div>
+                </div>
+
+                <button class="btn btn-primary" style="width:100%;margin-top:1rem;" onclick="openEditModal()">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </button>
+            </div>
+
+            <!-- Right -->
+            <div class="p-right">
+                <div class="p-section">
+                    <div class="p-section-head">
+                        <h2><i class="fas fa-star" style="color:#6366f1;"></i> My Skills</h2>
+                        <a href="add-skill.html" class="btn btn-primary" style="font-size:0.78rem;padding:6px 14px;">
+                            <i class="fas fa-plus"></i> Add Skill
+                        </a>
+                    </div>
+                    <div class="p-skills-grid" id="mySkills">
+                        <p style="color:#9ca3af;font-size:0.85rem;">Loading...</p>
+                    </div>
+                </div>
+
+                <div class="p-section">
+                    <div class="p-section-head">
+                        <h2><i class="fas fa-comments" style="color:#6366f1;"></i> Reviews Received</h2>
+                    </div>
+                    <div id="recentReviews">
+                        <p style="color:#9ca3af;font-size:0.85rem;">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="edit-overlay" id="editModal">
+    <div class="edit-box">
+        <h3><i class="fas fa-edit" style="color:#6366f1;margin-right:8px;"></i>Edit Profile</h3>
+        <div class="ef" style="display:flex;flex-direction:column;gap:1rem;">
+            <div>
+                <label for="editUsername">Display Name</label>
+                <input type="text" id="editUsername" placeholder="Your display name" maxlength="50">
+            </div>
+            <div>
+                <label for="editBio">Bio <span style="font-weight:400;color:#9ca3af;">(optional)</span></label>
+                <textarea id="editBio" placeholder="Tell others what you teach and want to learn..." maxlength="500"
+                    oninput="document.getElementById('bioCount').textContent=this.value.length"></textarea>
+                <div class="char-count"><span id="bioCount">0</span>/500</div>
+            </div>
+            <div class="ef-row">
+                <button class="btn btn-primary" style="flex:1;" onclick="saveProfile()">
+                    <i class="fas fa-save"></i> Save
+                </button>
+                <button class="btn btn-outline" style="flex:1;" onclick="closeEditModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Photo Upload Modal -->
+<div class="edit-overlay" id="photoModal">
+    <div class="edit-box" style="max-width:360px;">
+        <h3><i class="fas fa-camera" style="color:#6366f1;margin-right:8px;"></i>Profile Photo</h3>
+        <div id="photoPreviewArea">
+            <div class="photo-drop" onclick="document.getElementById('photoFileInput').click()">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Click to choose a photo<br><span style="font-size:0.75rem;">JPG, PNG — max 1.5MB</span></p>
+            </div>
+        </div>
+        <div class="ef-row" style="margin-top:1rem;">
+            <button class="btn btn-primary" style="flex:1;" id="savePhotoBtn" onclick="savePhoto()" disabled>
+                <i class="fas fa-save"></i> Save Photo
+            </button>
+            <button class="btn btn-outline" style="flex:1;" onclick="closePhotoModal()">Cancel</button>
+        </div>
+        <button class="btn btn-outline" style="width:100%;margin-top:0.5rem;color:#ef4444;border-color:#ef4444;" onclick="removePhoto()">
+            <i class="fas fa-trash"></i> Remove Photo
+        </button>
+    </div>
+</div>
+
+<div id="notification" class="notification"></div>
+
+<script src="../js/main.js"></script>
+<script src="../js/notifications.js"></script>
+<script>
+if (!isAuthenticated()) window.location.href = '/';
+
+var _profile = {};
+var _pendingPhotoData = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadProfile();
+    loadMySkills();
+    loadReviews();
+});
+
+// ── Load profile ──────────────────────────────────────────────────────────────
+async function loadProfile() {
+    var token = localStorage.getItem('token');
+    try {
+        var res = await fetch(API_URL + '/api/user/profile', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) return;
+        var u = await res.json();
+        _profile = u;
+        renderProfile(u);
+    } catch(e) { console.error(e); }
+}
+
+function renderProfile(u) {
+    document.getElementById('userName').textContent    = u.username || 'User';
+    document.getElementById('userCredits').textContent = 'Credits: ' + (u.credits || 0);
+    document.getElementById('profileUsername').textContent = u.username || 'User';
+    document.getElementById('profileEmail').textContent    = u.email || '';
+    document.getElementById('profileEmailMeta').textContent = u.email || '';
+    document.getElementById('profileCredits').textContent  = u.credits || 0;
+    document.getElementById('profileSessions').textContent = u.total_sessions || 0;
+
+    var roleMap = { teacher:'Teacher', learner:'Learner', both:'Teach & Learn' };
+    document.getElementById('profileRole').textContent = roleMap[u.role] || u.role || '—';
+
+    // Bio
+    var bioEl = document.getElementById('profileBio');
+    if (u.bio && u.bio.trim()) {
+        bioEl.textContent = u.bio;
+        bioEl.classList.remove('empty');
+    } else {
+        bioEl.textContent = 'No bio yet. Click Edit Profile to add one.';
+        bioEl.classList.add('empty');
+    }
+
+    // Joined date
+    if (u.created_at) {
+        var d = new Date(u.created_at);
+        document.getElementById('profileJoined').textContent =
+            d.toLocaleDateString('en-US', { year:'numeric', month:'short' });
+    }
+
+    // Stars
+    renderStars(parseFloat(u.rating) || 0, u.total_sessions || 0);
+
+    // Avatar
+    renderAvatar(u);
+}
+
+function renderAvatar(u) {
+    var orb = document.getElementById('avatarOrb');
+    var sidebar = document.getElementById('sidebarAvatar');
+
+    if (u.profile_pic && u.profile_pic.startsWith('data:image/')) {
+        orb.innerHTML = '<img src="' + u.profile_pic + '" alt="Profile photo">';
+        if (sidebar) {
+            sidebar.innerHTML = '<img src="' + u.profile_pic + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="Avatar">';
+        }
+    } else {
+        var initials = (u.username || 'U').substring(0,2).toUpperCase();
+        orb.textContent = initials;
+        if (sidebar) sidebar.innerHTML = '<i class="fas fa-user"></i>';
+    }
+}
+
+function renderStars(rating, sessions) {
+    var row = document.getElementById('starRow');
+    var lbl = document.getElementById('ratingLabel');
+    row.innerHTML = '';
+    for (var i = 1; i <= 5; i++) {
+        var s = document.createElement('i');
+        s.className = 'fas fa-star ' + (i <= Math.round(rating) ? 'star-full' : 'star-empty');
+        row.appendChild(s);
+    }
+    lbl.textContent = sessions > 0
+        ? rating.toFixed(1) + ' / 5.0  (' + sessions + ' session' + (sessions !== 1 ? 's' : '') + ')'
+        : 'No ratings yet';
+}
+
+// ── Skills ────────────────────────────────────────────────────────────────────
+async function loadMySkills() {
+    var token = localStorage.getItem('token');
+    try {
+        var res = await fetch(API_URL + '/api/skills/my-skills', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        var data = await res.json();
+        if (res.ok) renderSkills(data.skills || []);
+    } catch(e) {
+        document.getElementById('mySkills').innerHTML =
+            '<p style="color:#9ca3af;font-size:0.85rem;">Failed to load skills.</p>';
+    }
+}
+
+function renderSkills(skills) {
+    document.getElementById('profileSkillCount').textContent = skills.length;
+    var el = document.getElementById('mySkills');
+    if (!skills.length) {
+        el.innerHTML =
+            '<div style="grid-column:1/-1;text-align:center;padding:1.5rem 0;">' +
+            '<i class="fas fa-lightbulb" style="font-size:2rem;color:#d1d5db;display:block;margin-bottom:0.7rem;"></i>' +
+            '<p style="color:#9ca3af;font-size:0.85rem;margin-bottom:1rem;">No skills added yet.</p>' +
+            '<a href="add-skill.html" class="btn btn-primary" style="font-size:0.82rem;">' +
+            '<i class="fas fa-plus"></i> Add First Skill</a></div>';
+        return;
+    }
+    el.innerHTML = skills.map(function(s) {
+        var desc = s.description ? escapeHtml(s.description.substring(0,80)) + (s.description.length > 80 ? '...' : '') : '';
+        return '<div class="p-skill-card">' +
+            '<div class="p-skill-name">' + escapeHtml(s.name || 'Skill') + '</div>' +
+            '<div class="p-skill-row">' +
+            '<span class="level-' + (s.level||'Beginner') + '">' + (s.level||'Beginner') + '</span>' +
+            '<span class="p-skill-credits"><i class="fas fa-coins"></i> ' + (s.credits_per_hour||0) + '/hr</span>' +
+            '</div>' +
+            (desc ? '<div class="p-skill-desc">' + desc + '</div>' : '') +
+            '</div>';
+    }).join('');
+}
+
+// ── Reviews ───────────────────────────────────────────────────────────────────
+async function loadReviews() {
+    var token = localStorage.getItem('token');
+    var user  = getCurrentUser();
+    if (!user) return;
+    try {
+        var res = await fetch(API_URL + '/api/reviews/user/' + user.id, {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        var data = await res.json();
+        if (res.ok) renderReviews(data.reviews || []);
+    } catch(e) {}
+}
+
+function renderReviews(reviews) {
+    var el = document.getElementById('recentReviews');
+    if (!reviews.length) {
+        el.innerHTML = '<p style="color:#9ca3af;font-size:0.85rem;">No reviews yet. Complete sessions to receive reviews.</p>';
+        return;
+    }
+    el.innerHTML = reviews.map(function(r) {
+        var starsHtml = '';
+        for (var si = 1; si <= 5; si++) {
+            starsHtml += '<i class="fas fa-star" style="color:' + (si <= (r.rating||0) ? '#f59e0b' : '#d1d5db') + ';font-size:0.82rem;"></i>';
+        }
+        var stars = starsHtml;
+        return '<div class="review-card">' +
+            '<div class="review-top">' +
+            '<span class="review-author"><i class="fas fa-user-circle" style="color:#6366f1;margin-right:4px;"></i>' + escapeHtml(r.reviewer_name||'Anonymous') + '</span>' +
+            '<span class="review-stars">' + stars + '</span></div>' +
+            '<div class="review-comment">' + escapeHtml(r.comment||'No comment') + '</div>' +
+            '<div class="review-date">' + new Date(r.created_at).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'}) + '</div>' +
+            '</div>';
+    }).join('');
+}
+
+// ── Edit Profile Modal ────────────────────────────────────────────────────────
+function openEditModal() {
+    document.getElementById('editUsername').value = _profile.username || '';
+    document.getElementById('editBio').value      = _profile.bio || '';
+    document.getElementById('bioCount').textContent = (_profile.bio || '').length;
+    document.getElementById('editModal').classList.add('open');
+}
+function closeEditModal() {
+    document.getElementById('editModal').classList.remove('open');
+}
+document.getElementById('editModal').addEventListener('click', function(e) {
+    if (e.target === this) closeEditModal();
+});
+
+async function saveProfile() {
+    var username = document.getElementById('editUsername').value.trim();
+    var bio      = document.getElementById('editBio').value.trim();
+    if (!username) { showNotification('Name cannot be empty', 'error'); return; }
+
+    var token = localStorage.getItem('token');
+    try {
+        var res = await fetch(API_URL + '/api/user/profile', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+            body: JSON.stringify({ username: username, bio: bio })
+        });
+        var data = await res.json();
+        if (res.ok && data.success) {
+            _profile = Object.assign(_profile, data.user);
+            var stored = getCurrentUser() || {};
+            localStorage.setItem('user', JSON.stringify(Object.assign(stored, { username: data.user.username })));
+            renderProfile(_profile);
+            closeEditModal();
+            showNotification('Profile updated!', 'success');
+        } else {
+            showNotification(data.error || 'Update failed', 'error');
+        }
+    } catch(e) {
+        showNotification('Failed to save. Try again.', 'error');
+    }
+}
+
+// ── Photo Upload ──────────────────────────────────────────────────────────────
+function openPhotoModal() {
+    _pendingPhotoData = null;
+    document.getElementById('savePhotoBtn').disabled = true;
+    document.getElementById('photoPreviewArea').innerHTML =
+        '<div class="photo-drop" onclick="document.getElementById(\'photoFileInput\').click()">' +
+        '<i class="fas fa-cloud-upload-alt"></i>' +
+        '<p>Click to choose a photo<br><span style="font-size:0.75rem;">JPG, PNG — max 1.5MB</span></p>' +
+        '</div>';
+    document.getElementById('photoModal').classList.add('open');
+}
+function closePhotoModal() {
+    document.getElementById('photoModal').classList.remove('open');
+}
+document.getElementById('photoModal').addEventListener('click', function(e) {
+    if (e.target === this) closePhotoModal();
+});
+
+function handlePhotoFile(event) {
+    var file = event.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+        showNotification('Please choose an image file', 'error'); return;
+    }
+    if (file.size > 1.5 * 1024 * 1024) {
+        showNotification('Image must be under 1.5MB', 'error'); return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        _pendingPhotoData = e.target.result;
+        document.getElementById('photoPreviewArea').innerHTML =
+            '<img class="photo-preview" src="' + _pendingPhotoData + '" alt="Preview">' +
+            '<p style="text-align:center;font-size:0.8rem;color:#6b7280;margin-top:0.5rem;">Looks good? Click Save Photo.</p>';
+        document.getElementById('savePhotoBtn').disabled = false;
+    };
+    reader.readAsDataURL(file);
+    event.target.value = '';
+}
+
+async function savePhoto() {
+    if (!_pendingPhotoData) return;
+    var token = localStorage.getItem('token');
+    var btn = document.getElementById('savePhotoBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+    try {
+        var res = await fetch(API_URL + '/api/user/profile/photo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+            body: JSON.stringify({ photo: _pendingPhotoData })
+        });
+        var data = await res.json();
+        if (res.ok && data.success) {
+            _profile.profile_pic = data.photo;
+            renderAvatar(_profile);
+            closePhotoModal();
+            showNotification('Profile photo updated!', 'success');
+        } else {
+            showNotification(data.error || 'Upload failed', 'error');
+        }
+    } catch(e) {
+        showNotification('Upload failed. Try again.', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-save"></i> Save Photo';
+    }
+}
+
+async function removePhoto() {
+    if (!confirm('Remove your profile photo?')) return;
+    var token = localStorage.getItem('token');
+    try {
+        var res = await fetch(API_URL + '/api/user/profile/photo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+            body: JSON.stringify({ photo: '' })
+        });
+        var data = await res.json();
+        if (res.ok && data.success) {
+            _profile.profile_pic = '';
+            renderAvatar(_profile);
+            closePhotoModal();
+            showNotification('Profile photo removed.', 'success');
+        }
+    } catch(e) { showNotification('Failed. Try again.', 'error'); }
+}
+</script>
+</body>
+</html>

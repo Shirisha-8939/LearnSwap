@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Skills - LearnSwap</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Filter bar */
+        .filter-bar {
+            display:flex; gap:0.75rem; margin-bottom:1.5rem; flex-wrap:wrap;
+            background:#fff; padding:1.2rem; border-radius:14px;
+            box-shadow:0 2px 12px rgba(0,0,0,0.06);
+        }
+        .filter-bar input, .filter-bar select {
+            border:1.5px solid #e5e7eb; border-radius:10px; padding:10px 14px;
+            font-size:0.88rem; color:#374151; background:#fff; font-family:inherit;
+            transition:border-color 0.2s;
+        }
+        .filter-bar input { flex:1; min-width:200px; }
+        .filter-bar input:focus, .filter-bar select:focus { outline:none; border-color:#6366f1; }
+        .filter-bar select { min-width:140px; }
+
+        /* Skills grid */
+        .skills-grid-new {
+            display:grid;
+            grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+            gap:1.2rem;
+        }
+
+        /* Skill card */
+        .skill-card-new {
+            background:#fff; border-radius:16px; padding:1.4rem;
+            box-shadow:0 2px 12px rgba(0,0,0,0.06);
+            border:1px solid #f3f4f6; transition:all 0.25s;
+            display:flex; flex-direction:column; gap:0;
+        }
+        .skill-card-new:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(99,102,241,0.15); border-color:#e0e7ff; }
+
+        .scard-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.8rem; }
+        .scard-name { font-size:1rem; font-weight:700; color:#111; line-height:1.3; }
+        .scard-level {
+            font-size:0.68rem; font-weight:700; padding:3px 10px; border-radius:999px;
+            white-space:nowrap; flex-shrink:0; margin-left:8px;
+        }
+        .level-Beginner     { background:#dcfce7; color:#16a34a; }
+        .level-Intermediate { background:#fef3c7; color:#d97706; }
+        .level-Advanced     { background:#fee2e2; color:#dc2626; }
+
+        .scard-desc { font-size:0.82rem; color:#6b7280; line-height:1.55; margin-bottom:0.9rem; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+
+        /* Course info row */
+        .scard-course { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:0.8rem; }
+        .scard-badge {
+            display:inline-flex; align-items:center; gap:5px;
+            background:#f5f3ff; color:#6366f1; border-radius:8px;
+            padding:4px 10px; font-size:0.72rem; font-weight:600;
+        }
+
+        .scard-teacher { display:flex; align-items:center; gap:7px; margin-bottom:0.75rem; }
+        .scard-teacher-avatar {
+            width:28px; height:28px; border-radius:50%;
+            background:linear-gradient(135deg,#6366f1,#8b5cf6);
+            display:flex; align-items:center; justify-content:center;
+            font-size:0.65rem; font-weight:700; color:#fff; flex-shrink:0;
+        }
+        .scard-teacher-info { flex:1; }
+        .scard-teacher-name { font-size:0.78rem; font-weight:600; color:#374151; }
+        .scard-stars { display:flex; align-items:center; gap:2px; }
+        .scard-stars i { font-size:0.65rem; color:#f59e0b; }
+        .scard-stars span { font-size:0.7rem; color:#9ca3af; margin-left:3px; }
+
+        .scard-footer { display:flex; justify-content:space-between; align-items:center; margin-top:auto; padding-top:0.8rem; border-top:1px solid #f3f4f6; }
+        .scard-price { font-size:1.05rem; font-weight:800; color:#6366f1; }
+        .scard-price small { font-size:0.7rem; font-weight:400; color:#9ca3af; }
+        .btn-request {
+            background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff;
+            border:none; border-radius:10px; padding:8px 16px; font-size:0.82rem;
+            font-weight:600; cursor:pointer; transition:all 0.2s;
+        }
+        .btn-request:hover { opacity:0.88; transform:translateY(-1px); }
+
+        /* Request modal */
+        .req-modal-content { max-width:460px; }
+        .req-info-box { background:#f9fafb; border-radius:12px; padding:1rem; margin-bottom:1.2rem; border:1px solid #f3f4f6; }
+        .req-info-box h4 { font-size:0.9rem; font-weight:700; color:#111; margin-bottom:2px; }
+        .req-info-box p  { font-size:0.8rem; color:#6b7280; margin:0; }
+        .credits-display { background:linear-gradient(135deg,#6366f1,#8b5cf6); border-radius:12px; padding:1rem; text-align:center; color:#fff; margin-bottom:1.2rem; }
+        .credits-display .big-num { font-size:2rem; font-weight:800; line-height:1; }
+        .credits-display .label   { font-size:0.78rem; opacity:0.8; margin-top:2px; }
+
+        /* Empty state */
+        .empty-state { grid-column:1/-1; text-align:center; padding:4rem 2rem; }
+        .empty-state .empty-icon { width:80px; height:80px; background:#f5f3ff; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 1.2rem; font-size:2rem; color:#6366f1; }
+        .empty-state h3 { font-size:1.1rem; font-weight:700; color:#111; margin-bottom:0.4rem; }
+        .empty-state p  { color:#6b7280; font-size:0.88rem; margin-bottom:1.2rem; }
+
+        .page-header { margin-bottom:1.5rem; }
+        .page-header h1 { font-size:1.6rem; font-weight:800; color:#111; }
+        .page-header p  { color:#6b7280; font-size:0.88rem; margin-top:4px; }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-exchange-alt"></i> <span>LearnSwap</span></h2>
+        </div>
+        <div class="user-info">
+            <div class="user-avatar"><i class="fas fa-user"></i></div>
+            <div class="user-name" id="userName">Loading...</div>
+            <div class="user-credits" id="userCredits">Credits: 0</div>
+        </div>
+        <div class="sidebar-menu">
+            <a href="dashboard.html"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <a href="browse-skills.html" class="active"><i class="fas fa-search"></i><span>Browse Skills</span></a>
+            <a href="my-sessions.html"><i class="fas fa-calendar"></i><span>My Sessions</span></a>
+            <a href="add-skill.html"><i class="fas fa-plus-circle"></i><span>Add Skill</span></a>
+            <a href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a>
+<a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1><i class="fas fa-search" style="color:#6366f1;margin-right:8px;font-size:1.3rem;"></i>Browse Skills</h1>
+            <p>Discover skills taught by our community. Request a session to start learning.</p>
+        </div>
+
+        <!-- Filter bar -->
+        <div class="filter-bar">
+            <input type="text" id="searchInput" placeholder="Search by skill name, tags..." oninput="applyFilters()">
+            <select id="categoryFilter" onchange="applyFilters()">
+                <option value="">All Categories</option>
+                <option value="programming">Programming</option>
+                <option value="language">Language</option>
+                <option value="music">Music</option>
+                <option value="art">Art &amp; Design</option>
+                <option value="business">Business</option>
+                <option value="academic">Academic</option>
+                <option value="fitness">Fitness &amp; Health</option>
+                <option value="cooking">Cooking</option>
+                <option value="other">Other</option>
+            </select>
+            <select id="levelFilter" onchange="applyFilters()">
+                <option value="">All Levels</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+            </select>
+        </div>
+
+        <!-- Skills grid — rendered by skills.js but overridden by our displaySkillsNew -->
+        <div id="skillsGrid" class="skills-grid-new">
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-spinner fa-spin"></i></div>
+                <h3>Loading skills...</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Request Session Modal -->
+<div id="requestModal" class="modal" onclick="if(event.target===this)closeModal('requestModal')">
+    <div class="modal-content req-modal-content">
+        <button class="close" onclick="closeModal('requestModal')" style="position:absolute;top:1.2rem;right:1.5rem;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#9ca3af;">&times;</button>
+        <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:1.5rem;">Request a Session</h2>
+
+        <input type="hidden" id="requestSkillId">
+        <input type="hidden" id="requestTeacherId">
+
+        <div class="req-info-box">
+            <h4 id="requestSkillName">Skill Name</h4>
+            <p>Teacher: <strong id="requestTeacherName">—</strong></p>
+        </div>
+
+        <form id="requestForm" onsubmit="submitRequest(event)">
+            <div class="form-group">
+                <label for="scheduledTime" style="font-size:0.85rem;font-weight:600;color:#374151;margin-bottom:5px;display:block;">Schedule Date &amp; Time</label>
+                <input type="datetime-local" id="scheduledTime" required
+                    style="width:100%;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;box-sizing:border-box;">
+            </div>
+
+            <div class="form-group">
+                <label for="duration" style="font-size:0.85rem;font-weight:600;color:#374151;margin-bottom:5px;display:block;">Duration (hours)</label>
+                <input type="number" id="duration" min="0.5" max="4" step="0.5" value="1" required
+                    onchange="calculateCredits()"
+                    style="width:100%;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;box-sizing:border-box;">
+            </div>
+
+            <div class="credits-display">
+                <div class="big-num" id="creditsRequired">0</div>
+                <div class="label">Credits required for this session</div>
+                <div style="font-size:0.72rem;opacity:0.7;margin-top:4px;">Credits are only charged after both parties confirm completion</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full" style="padding:13px;font-size:0.95rem;">
+                <i class="fas fa-paper-plane"></i> Send Session Request
+            </button>
+        </form>
+    </div>
+</div>
+
+<div id="notification" class="notification"></div>
+
+<script src="../js/main.js"></script>
+<script src="../js/notifications.js"></script>
+<script src="../js/skills.js"></script>
+<script>
+// Override displaySkills with improved card design
+window.displaySkills = function(skills) {
+    var grid = document.getElementById('skillsGrid');
+    var user = getCurrentUser();
+    if (!grid) return;
+
+    var available = user ? skills.filter(function(s){ return s.user_id != user.id; }) : skills;
+
+    if (!available.length) {
+        grid.innerHTML =
+            '<div class="empty-state">' +
+            '<div class="empty-icon"><i class="fas fa-graduation-cap"></i></div>' +
+            '<h3>No skills found</h3>' +
+            '<p>Try a different search or check back later. You can also add your own skill!</p>' +
+            '<a href="add-skill.html" class="btn btn-primary"><i class="fas fa-plus"></i> Add a Skill</a>' +
+            '</div>';
+        return;
+    }
+
+    grid.innerHTML = available.map(function(skill) {
+        var rating = parseFloat(skill.teacher_rating) || 0;
+        var initials = (skill.teacher_name || 'U').substring(0,2).toUpperCase();
+        var planned  = parseInt(skill.total_planned_sessions) || 0;
+        var durDays  = parseInt(skill.course_duration_days) || 0;
+
+        // Stars
+        var stars = '';
+        for (var i=1;i<=5;i++) stars += '<i class="fas fa-star" style="color:' + (i<=Math.round(rating)?'#f59e0b':'#e5e7eb') + ';"></i>';
+
+        // Course badge
+        var courseBadge = '';
+        if (planned > 1) {
+            courseBadge += '<span class="scard-badge"><i class="fas fa-layer-group"></i> ' + planned + ' sessions</span>';
+        }
+        if (durDays > 0) {
+            courseBadge += '<span class="scard-badge"><i class="fas fa-calendar-alt"></i> ' + durDays + ' days</span>';
+        }
+
+        var desc = (skill.description || 'No description provided');
+        var safeSkillName    = escapeHtml(skill.name || 'Untitled');
+        var safeTeacherName  = escapeHtml(skill.teacher_name || 'Unknown');
+        var safeDesc         = escapeHtml(desc);
+
+        return '<div class="skill-card-new">' +
+            '<div class="scard-top">' +
+            '<div class="scard-name">' + safeSkillName + '</div>' +
+            '<span class="scard-level level-' + (skill.level||'Beginner') + '">' + (skill.level||'Beginner') + '</span>' +
+            '</div>' +
+            '<div class="scard-desc">' + safeDesc + '</div>' +
+            (courseBadge ? '<div class="scard-course">' + courseBadge + '</div>' : '') +
+            '<div class="scard-teacher">' +
+            '<div class="scard-teacher-avatar">' + initials + '</div>' +
+            '<div class="scard-teacher-info">' +
+            '<div class="scard-teacher-name">' + safeTeacherName + '</div>' +
+            '<div class="scard-stars">' + stars + '<span>' + rating.toFixed(1) + '</span></div>' +
+            '</div></div>' +
+            '<div class="scard-footer">' +
+            '<div class="scard-price">' + (skill.credits_per_hour||0) + '<small> credits/hr</small></div>' +
+            '<button class="btn-request" onclick=\'openRequestModal("' + skill.id + '","' + skill.user_id + '","' + safeSkillName.replace(/'/g,"&#39;") + '","' + safeTeacherName.replace(/'/g,"&#39;") + '")\'>' +
+            '<i class="fas fa-paper-plane"></i> Request</button>' +
+            '</div></div>';
+    }).join('');
+};
+</script>
+</body>
+</html>

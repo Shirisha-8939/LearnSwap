@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms, Conditions &amp; Safety - LearnSwap</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background:#f8fafc; }
+        .terms-page { max-width:800px; margin:0 auto; padding:2rem 1.5rem 4rem; }
+        .terms-hero {
+            background:linear-gradient(135deg,#6366f1,#8b5cf6);
+            border-radius:20px; padding:2.5rem; color:#fff; margin-bottom:2rem; text-align:center;
+        }
+        .terms-hero h1 { font-size:1.8rem; font-weight:800; margin-bottom:0.4rem; }
+        .terms-hero p  { font-size:0.9rem; opacity:0.85; }
+
+        .tab-bar { display:flex; gap:8px; margin-bottom:1.5rem; flex-wrap:wrap; }
+        .tab-btn {
+            padding:9px 20px; border-radius:999px; font-size:0.85rem; font-weight:600;
+            cursor:pointer; border:none; transition:all 0.2s;
+        }
+        .tab-btn.active { background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; }
+        .tab-btn:not(.active) { background:#fff; color:#374151; border:1px solid #e5e7eb; }
+        .tab-btn:hover:not(.active) { border-color:#6366f1; color:#6366f1; }
+
+        .tab-content { display:none; }
+        .tab-content.active { display:block; }
+
+        .doc-card { background:#fff; border-radius:16px; padding:2rem; box-shadow:0 2px 16px rgba(0,0,0,0.07); }
+        .doc-card h2 { font-size:1.1rem; font-weight:700; color:#111; margin-bottom:1.5rem; display:flex; align-items:center; gap:8px; padding-bottom:1rem; border-bottom:2px solid #f3f4f6; }
+
+        .tc-block { margin-bottom:1.8rem; }
+        .tc-block h3 { font-size:0.92rem; font-weight:700; color:#111; margin-bottom:0.6rem; display:flex; align-items:center; gap:7px; }
+        .tc-block h3 i { color:#6366f1; width:18px; }
+        .tc-block p, .tc-block li { font-size:0.855rem; color:#4b5563; line-height:1.7; }
+        .tc-block ul { padding-left:1.1rem; margin:0.4rem 0; }
+        .tc-block li { margin-bottom:5px; }
+
+        /* Safety coloring */
+        .safety .tc-block h3 i { color:#059669; }
+
+        .highlight-box {
+            border-radius:12px; padding:14px 16px;
+            font-size:0.84rem; line-height:1.6; margin:1.2rem 0;
+            display:flex; gap:10px; align-items:flex-start;
+        }
+        .highlight-box.info    { background:#ede9fe; color:#4c1d95; border:1px solid #ddd6fe; }
+        .highlight-box.success { background:#f0fdf4; color:#166534; border:1px solid #bbf7d0; }
+        .highlight-box.warning { background:#fffbeb; color:#92400e; border:1px solid #fde68a; }
+        .highlight-box i { font-size:1.1rem; flex-shrink:0; margin-top:1px; }
+
+        .last-updated { font-size:0.78rem; color:#9ca3af; text-align:right; margin-top:1.5rem; }
+
+        .back-btn { display:inline-flex; align-items:center; gap:7px; color:#6366f1; font-weight:600; font-size:0.88rem; text-decoration:none; margin-bottom:1.5rem; }
+        .back-btn:hover { opacity:0.8; }
+    </style>
+</head>
+<body>
+    <div class="terms-page">
+        <a href="/" class="back-btn"><i class="fas fa-arrow-left"></i> Back to LearnSwap</a>
+
+        <div class="terms-hero">
+            <h1><i class="fas fa-balance-scale" style="margin-right:10px;"></i>Terms, Conditions &amp; Safety</h1>
+            <p>Please read these documents carefully before using LearnSwap. They protect you and the community.</p>
+        </div>
+
+        <!-- Tab navigation -->
+        <div class="tab-bar">
+            <button class="tab-btn active" onclick="switchTab('terms', this)">
+                <i class="fas fa-file-contract"></i> Terms &amp; Conditions
+            </button>
+            <button class="tab-btn" onclick="switchTab('safety', this)">
+                <i class="fas fa-shield-alt"></i> Safety Guidelines
+            </button>
+            <button class="tab-btn" onclick="switchTab('privacy', this)">
+                <i class="fas fa-lock"></i> Privacy Policy
+            </button>
+        </div>
+
+        <!-- ── TERMS & CONDITIONS ── -->
+        <div class="tab-content active" id="tab-terms">
+            <div class="doc-card">
+                <h2><i class="fas fa-file-contract" style="color:#6366f1;"></i> Terms &amp; Conditions</h2>
+
+                <div class="highlight-box info">
+                    <i class="fas fa-info-circle"></i>
+                    <span>By creating an account you confirm that you have read, understood, and agreed to all of the following terms. These terms apply to all users — both teachers and learners.</span>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-handshake"></i> 1. Agreement to Terms</h3>
+                    <p>By registering on LearnSwap you enter into a binding agreement with these Terms and Conditions. If you do not agree with any part, please do not create an account or use the platform.</p>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-coins"></i> 2. The Credit System</h3>
+                    <p>LearnSwap operates on a virtual credit economy. Important rules:</p>
+                    <ul>
+                        <li>Credits have no real monetary value and cannot be exchanged for money.</li>
+                        <li>Every new user receives 100 starter credits.</li>
+                        <li>Credits are <strong>only transferred when both teacher and learner confirm</strong> that a session is complete.</li>
+                        <li>The platform does not automatically transfer or charge credits.</li>
+                        <li>Attempting to manipulate the credit system is grounds for immediate account suspension.</li>
+                    </ul>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-chalkboard-teacher"></i> 3. Teacher Responsibilities</h3>
+                    <ul>
+                        <li>Only list skills you genuinely possess and can teach effectively.</li>
+                        <li>Provide an accurate course plan — total sessions and estimated duration — before publishing.</li>
+                        <li>Attend all scheduled sessions on time or provide at least 24 hours advance notice of cancellation.</li>
+                        <li>Confirm session completion only when the session genuinely took place.</li>
+                        <li>Never request payment, gifts, or favours outside the LearnSwap credit system.</li>
+                        <li>Maintain professional and respectful communication with all learners.</li>
+                    </ul>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-user-graduate"></i> 4. Learner Responsibilities</h3>
+                    <ul>
+                        <li>Ensure you have sufficient credits before requesting a session.</li>
+                        <li>Attend all sessions you book, or cancel at least 24 hours in advance.</li>
+                        <li>Confirm session completion only when the session genuinely took place.</li>
+                        <li>Do not attempt to receive teaching without confirming credit transfer.</li>
+                        <li>Maintain respectful communication with teachers at all times.</li>
+                    </ul>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-ban"></i> 5. Prohibited Conduct</h3>
+                    <p>The following actions are strictly prohibited and will result in account suspension or permanent termination:</p>
+                    <ul>
+                        <li>Creating fake, duplicate, or impersonation accounts</li>
+                        <li>Publishing false or misleading skill descriptions</li>
+                        <li>Harassment, threats, or abusive language toward any user</li>
+                        <li>Any form of discrimination based on gender, religion, ethnicity, or background</li>
+                        <li>Attempting to exploit or manipulate the credit transfer system</li>
+                        <li>Sharing another user's private messages without consent</li>
+                        <li>Using the platform for commercial transactions outside the credit system</li>
+                        <li>Submitting false dispute reports to harm other users</li>
+                    </ul>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-tasks"></i> 6. Course Progress &amp; Sessions</h3>
+                    <p>Teachers set the number of planned sessions when listing a skill. The course progress bar shown on sessions reflects the number of completed (confirmed) sessions against the total planned. Credits are charged per session upon mutual confirmation — not upfront at booking time. Completing all planned sessions marks the course as finished.</p>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-flag"></i> 7. Disputes</h3>
+                    <p>If you believe a session confirmation was submitted incorrectly or in bad faith, use the Dispute button on the session. Disputes are reviewed manually. Users found to be filing disputes in bad faith or confirming sessions dishonestly may be suspended. LearnSwap's decision in disputes is final.</p>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-gavel"></i> 8. Account Suspension &amp; Termination</h3>
+                    <p>LearnSwap reserves the right to suspend or permanently terminate any account that violates these terms, engages in abusive behaviour, or attempts to circumvent the credit system. Credits remaining in a terminated account are forfeited. No appeal is guaranteed, though users may contact the platform.</p>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-sync-alt"></i> 9. Changes to These Terms</h3>
+                    <p>These terms may be updated at any time. Users will be notified of significant changes. Continued use of LearnSwap after changes constitutes acceptance of the revised terms.</p>
+                </div>
+
+                <div class="highlight-box success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>By registering, you confirm you have read, understood, and agreed to these Terms &amp; Conditions in full.</span>
+                </div>
+
+                <p class="last-updated">Last updated: March 2026</p>
+            </div>
+        </div>
+
+        <!-- ── SAFETY GUIDELINES ── -->
+        <div class="tab-content" id="tab-safety">
+            <div class="doc-card safety">
+                <h2><i class="fas fa-shield-alt" style="color:#059669;"></i> Safety Guidelines</h2>
+
+                <div class="highlight-box success">
+                    <i class="fas fa-heart"></i>
+                    <span>LearnSwap is a community built on trust and mutual respect. These guidelines help keep every member safe.</span>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-user-shield"></i> Protect Your Personal Information</h3>
+                    <ul>
+                        <li>Never share your home address, phone number, bank details, or government ID with other users.</li>
+                        <li>Your email address is private — it is never visible to other users.</li>
+                        <li>You are not required to use your real full name as your display name.</li>
+                        <li>Be cautious about sharing social media handles or messaging app usernames.</li>
+                    </ul>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-comments"></i> Safe Communication</h3>
+                    <ul>
+                        <li>All session communication should take place within LearnSwap's built-in chat system.</li>
+                        <li>Report any user who pressures you to move communication to another platform.</li>
+                        <li>Block and report any user who sends inappropriate, threatening, or harassing messages.</li>
+                        <li>You are never obligated to continue a session if you feel uncomfortable.</li>
+                    </ul>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-coins"></i> Credit Safety — How to Stay Protected</h3>
+                    <ul>
+                        <li><strong>Credits never leave your account automatically.</strong> Both you and the other party must confirm a session before any credits move.</li>
+                        <li>If someone pressures you to confirm a session that did not occur, use the Dispute button immediately.</li>
+                        <li>LearnSwap will <strong>never</strong> ask for real money, credit card numbers, or bank information.</li>
+                        <li>Anyone claiming to be "LearnSwap support" and asking for credits or passwords is a scam — report them.</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span><strong>Warning:</strong> If any user asks you for real money, gift cards, cryptocurrency, or any form of payment outside the LearnSwap credit system, report them immediately. This is prohibited and may be fraudulent.</span>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Recognise and Report Abuse</h3>
+                    <ul>
+                        <li>Report users who engage in hate speech, discrimination, or offensive behaviour.</li>
+                        <li>Report any form of sexual harassment or unwanted advances immediately.</li>
+                        <li>Report users who attempt to share illegal content or promote illegal activities.</li>
+                        <li>You can cancel and report a session at any time — your safety comes first.</li>
+                    </ul>
+                    <p style="margin-top:0.6rem;">Use the <strong>Dispute / Report</strong> button available on every session to raise a concern.</p>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-child"></i> Younger Users</h3>
+                    <p>LearnSwap is intended for users aged 13 and above. Users under 18 should ensure a parent or guardian is aware of their use of the platform. If you encounter any content inappropriate for minors, please report it immediately using the Dispute feature.</p>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-life-ring"></i> When to Stop and Seek Help</h3>
+                    <ul>
+                        <li>If any interaction makes you feel threatened or unsafe, end it immediately.</li>
+                        <li>If you are in immediate danger, contact your local emergency services.</li>
+                        <li>LearnSwap is a learning platform — no session is worth your personal safety.</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box success">
+                    <i class="fas fa-thumbs-up"></i>
+                    <span>Thank you for being a responsible member of the LearnSwap community. Together we keep this platform safe and productive for everyone.</span>
+                </div>
+
+                <p class="last-updated">Last updated: March 2026</p>
+            </div>
+        </div>
+
+        <!-- ── PRIVACY POLICY ── -->
+        <div class="tab-content" id="tab-privacy">
+            <div class="doc-card">
+                <h2><i class="fas fa-lock" style="color:#6366f1;"></i> Privacy Policy</h2>
+
+                <div class="highlight-box info">
+                    <i class="fas fa-info-circle"></i>
+                    <span>We respect your privacy. This policy explains what data LearnSwap collects, how it is used, and how it is protected.</span>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-database"></i> What We Collect</h3>
+                    <ul>
+                        <li><strong>Account data:</strong> Your username, email address, and hashed password.</li>
+                        <li><strong>Profile data:</strong> Your bio, profile photo (if uploaded), and role (teacher/learner).</li>
+                        <li><strong>Session data:</strong> Records of sessions, including scheduled times, duration, and confirmation status.</li>
+                        <li><strong>Chat messages:</strong> Messages sent within session chats are stored to support session history.</li>
+                        <li><strong>Credit transactions:</strong> Logs of credit transfers between users.</li>
+                    </ul>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-eye-slash"></i> What We Do NOT Collect</h3>
+                    <ul>
+                        <li>Real financial information (no payment cards or bank details)</li>
+                        <li>Your physical location or IP address history</li>
+                        <li>Browsing behaviour outside of LearnSwap</li>
+                        <li>Contact lists, device contacts, or social media data</li>
+                    </ul>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-share-alt"></i> How We Use Your Data</h3>
+                    <ul>
+                        <li>To operate your account and display your profile to other users.</li>
+                        <li>To facilitate skill sessions and credit transactions.</li>
+                        <li>To send password reset emails when you request them.</li>
+                        <li>To send in-app notifications about your sessions.</li>
+                        <li>To investigate disputes and enforce our Terms of Service.</li>
+                    </ul>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-handshake"></i> Data Sharing</h3>
+                    <p>We do not sell, rent, or share your personal data with third-party advertisers or marketing companies. Your data may only be disclosed in the following situations:</p>
+                    <ul>
+                        <li>If required by applicable law or a court order.</li>
+                        <li>To investigate and resolve reported abuse or security incidents.</li>
+                    </ul>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-trash-alt"></i> Data Deletion</h3>
+                    <p>If you wish to delete your account and all associated data, you may contact the platform. Account data will be deleted within 30 days of a valid request. Note that session records involving other users may be retained in anonymised form for platform integrity purposes.</p>
+                </div>
+
+                <div class="tc-block">
+                    <h3><i class="fas fa-cookie-bite"></i> Cookies</h3>
+                    <p>LearnSwap uses browser localStorage to keep you logged in between visits. No third-party tracking cookies are used. No advertising networks are loaded on this platform.</p>
+                </div>
+
+                <div class="highlight-box success">
+                    <i class="fas fa-lock"></i>
+                    <span>Your data is stored securely. Passwords are hashed and never stored in plain text. We are committed to protecting your privacy.</span>
+                </div>
+
+                <p class="last-updated">Last updated: March 2026</p>
+            </div>
+        </div>
+
+        <!-- Bottom navigation back to site -->
+        <div style="text-align:center;margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid #e5e7eb;">
+            <p style="font-size:0.85rem;color:#9ca3af;margin-bottom:1rem;">Have questions? Contact us through the LearnSwap platform.</p>
+            <a href="/" class="btn btn-primary" style="padding:12px 28px;">
+                <i class="fas fa-arrow-left"></i> Back to LearnSwap
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabId, btn) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(function(t){ t.classList.remove('active'); });
+            document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+            // Show selected
+            document.getElementById('tab-' + tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+    </script>
+</body>
+</html>
